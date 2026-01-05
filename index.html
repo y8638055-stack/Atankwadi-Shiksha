@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTAINMENT UNIT: SHIKHA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --toxic: #39ff14;
+            --danger: #ff3300;
+            --dark: #0a0a0a;
+            --panel: #111;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--dark);
+            color: var(--toxic);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0; padding: 0;
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            background-image: radial-gradient(circle, #1a221a 0%, #000 90%);
+        }
+        
+        /* CRT & Fog Effects */
+        body::before {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
+        .container {
+            width: 90%; max-width: 500px;
+            background: rgba(10, 10, 10, 0.9);
+            border: 2px solid var(--toxic);
+            box-shadow: 0 0 30px var(--toxic), inset 0 0 20px var(--toxic);
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 95% 100%, 0 100%);
+        }
+
+        h1 { font-family: 'Black Ops One', cursive; color: var(--toxic); text-transform: uppercase; margin: 0; font-size: 1.8rem; text-shadow: 0 0 10px var(--toxic); text-align: center; }
+        .sub-header { text-align: center; color: var(--danger); font-weight: bold; margin-bottom: 20px; border-bottom: 1px dashed var(--danger); padding-bottom: 10px; }
+        
+        /* Buttons */
+        .btn {
+            background: transparent; border: 2px solid var(--toxic); color: var(--toxic);
+            padding: 15px; width: 100%; margin-top: 15px;
+            font-family: 'Black Ops One', cursive; font-size: 1.1rem; cursor: pointer;
+            transition: 0.3s; text-transform: uppercase;
+        }
+        .btn:hover { background: var(--toxic); color: #000; box-shadow: 0 0 20px var(--toxic); }
+        .btn-danger { border-color: var(--danger); color: var(--danger); }
+        .btn-danger:hover { background: var(--danger); color: #000; box-shadow: 0 0 20px var(--danger); }
+        
+        /* Elements */
+        .step { display: none; animation: glitchIn 0.5s; }
+        .step.active { display: block; }
+        
+        input { background: #000; border: 1px solid var(--toxic); color: var(--toxic); padding: 10px; width: 100%; font-family: inherit; margin: 10px 0; outline: none; }
+        
+        .hazard-box { border: 1px dashed var(--danger); color: var(--danger); padding: 10px; margin: 10px 0; font-size: 0.8rem; }
+        
+        /* Custom Alert Modal */
+        #modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 100; align-items: center; justify-content: center;
+        }
+        .modal {
+            border: 2px solid var(--danger); background: #000; padding: 20px; width: 80%; max-width: 350px;
+            text-align: center; box-shadow: 0 0 50px var(--danger); animation: shake 0.5s;
+        }
+        .modal h2 { color: var(--danger); margin: 0 0 10px 0; }
+
+        /* Animations */
+        @keyframes glitchIn { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes shake { 0% { transform: translate(1px, 1px); } 10% { transform: translate(-1px, -2px); } 20% { transform: translate(-3px, 0px); } 30% { transform: translate(3px, 2px); } 100% { transform: translate(0, 0); } }
+
+        /* Vehicle Selection Grid */
+        .vehicle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .vehicle-btn { border: 1px solid #333; padding: 10px; text-align: center; cursor: pointer; opacity: 0.5; }
+        .vehicle-btn.selected { border-color: var(--toxic); opacity: 1; background: rgba(57, 255, 20, 0.1); }
+
+    </style>
+</head>
+<body>
+
+    <div id="modal-overlay">
+        <div class="modal">
+            <h2 id="modal-title">WARNING</h2>
+            <p id="modal-msg">Error text here.</p>
+            <button class="btn btn-danger" onclick="closeModal()">ACKNOWLEDGE ERROR</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>⚠ ENTITY DETECTED ⚠</h1>
+        <div class="sub-header">SUBJECT: SHIKHA (CODE: ATANKWADI)</div>
+
+        <div id="step1" class="step active">
+            <p>SYSTEM SCAN RESULTS:</p>
+            <div class="hazard-box">
+                > SPECIES: CHUDAIL (Class A)<br>
+                > OCCUPATION: RIKHSHA WALI<br>
+                > THREAT LEVEL: BLINKIT (Very Slow)
+            </div>
+            <p>Access to Admin (Kaushik) is restricted due to high levels of "Atank".</p>
+            <button class="btn" onclick="nextStep(2)">INITIATE CLEANUP</button>
+        </div>
+
+        <div id="step2" class="step">
+            <h2>TASK 1: SPEED TEST</h2>
+            <p>You are 'Blinkit'. Can you deliver a reply in under 10 minutes?</p>
+            <button class="btn btn-danger" onclick="triggerAlert('blinkit')">YES, I AM FAST</button>
+            <button class="btn" onclick="nextStep(3)">NO, I AM LAZY TURTLE</button>
+        </div>
+
+        <div id="step3" class="step">
+            <h2>TASK 2: VEHICLE ASSIGNMENT</h2>
+            <p>Select your designated vehicle for today's patrol:</p>
+            <div class="vehicle-grid">
+                <div class="vehicle-btn" onclick="triggerAlert('ferrari')">🏎️ FERRARI<br>(Locked)</div>
+                <div class="vehicle-btn" onclick="triggerAlert('bmw')">🚙 BMW<br>(Locked)</div>
+                <div class="vehicle-btn" onclick="triggerAlert('plane')">✈️ PRIVATE JET<br>(Locked)</div>
+                <div class="vehicle-btn selected" onclick="nextStep(4)">🛺 TOOTA HUA RIKHSHA<br>(Assigned)</div>
+            </div>
+        </div>
+
+        <div id="step4" class="step">
+            <h2>TASK 3: ANATOMY CHECK</h2>
+            <p>Scanning feet orientation...</p>
+            <div style="height: 5px; background: #333; margin: 10px 0;"><div id="bar" style="height:100%; width:0%; background:var(--danger); transition: 2s;"></div></div>
+            <p id="scan-text">Analyzing...</p>
+            <button class="btn" onclick="startFeetScan()">START SCAN</button>
+        </div>
+
+        <div id="step5" class="step">
+            <h2>TASK 4: DEFUSE TEMPER</h2>
+            <p>Code Name: 'Atankwadi'. Your anger is a ticking bomb.</p>
+            <p>Who is the calmest, coolest person?</p>
+            <input type="text" id="cool-input" placeholder="Type name...">
+            <button class="btn" onclick="checkCool()">DEFUSE BOMB</button>
+        </div>
+
+        <div id="step6" class="step">
+            <h1 style="color:var(--toxic)">CONTAINMENT SECURE</h1>
+            <p>Subject 'Shikha' is now under control.</p>
+            <div class="hazard-box" style="border-color: var(--toxic); color: var(--toxic);">
+                MANDATORY PENALTY:<br>
+                Send a voice note saying:<br>
+                <strong>"Main atankwadi hu, aur mera Rikhsha puncture hai."</strong>
+            </div>
+            <p>Failure to comply will result in a permanent "Chudail" label.</p>
+        </div>
+
+    </div>
+
+    <script>
+        // --- JOKE DATABASE ---
+        const jokes = {
+            blinkit: [
+                "⚠ ERROR: DELIVERY TOO SLOW. You are definitely Blinkit.",
+                "⚠ System detects you take 3 business days to reply.",
+                "⚠ Lying Detected. You are slower than a snail."
+            ],
+            ferrari: [
+                "ACCESS DENIED: Rikhsha Walis cannot drive Ferraris.",
+                "ERROR 404: License not found.",
+                "Stay in your lane, Rikhsha Wali."
+            ],
+            bmw: [
+                "ALERT: This car requires a brain to drive.",
+                "REJECTED: Stick to your 3-wheeler.",
+                "Kaushik owns this. You cannot touch."
+            ],
+            plane: [
+                "WARNING: Chudails fly on brooms, not planes.",
+                "Get your broomstick out.",
+                "Air Traffic Control denied your request."
+            ],
+            atank: [
+                "⚠ WRONG ANSWER! The bomb is ticking!",
+                "⚠ Kaushik is the only cool one here.",
+                "⚠ Stop exploding, Atankwadi."
+            ]
+        };
+
+        // --- NAVIGATION ---
+        function nextStep(n) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + n).classList.add('active');
+        }
+
+        // --- CUSTOM ALERT LOGIC ---
+        function triggerAlert(type) {
+            let msgs = jokes[type];
+            if(!msgs) msgs = ["Error"];
+            const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
+            
+            document.getElementById('modal-msg').innerText = randomMsg;
+            document.getElementById('modal-overlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+
+        // --- FEET SCANNER ---
+        function startFeetScan() {
+            let bar = document.getElementById('bar');
+            let text = document.getElementById('scan-text');
+            bar.style.width = "100%";
+            
+            setTimeout(() => { text.innerText = "Scanning toes..."; }, 800);
+            setTimeout(() => { text.innerText = "Detecting rotation..."; }, 1500);
+            setTimeout(() => { 
+                text.innerText = "RESULT: FEET BACKWARD (Confirmed Chudail)";
+                text.style.color = "var(--danger)";
+                setTimeout(() => nextStep(5), 2000);
+            }, 2500);
+        }
+
+        // --- BOMB DEFUSE ---
+        function checkCool() {
+            const val = document.getElementById('cool-input').value.toLowerCase();
+            if(val.includes("kaushik")) {
+                nextStep(6);
+            } else {
+                triggerAlert('atank');
+            }
+        }
+    </script>
+</body>
+</html>
